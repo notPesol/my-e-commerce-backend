@@ -2,7 +2,7 @@ import { Type, applyDecorators } from '@nestjs/common';
 import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 import { ResponseDTO } from '../dto/response.dto';
 
-export const ApiResponseDTO = <T extends Type<any>>(
+export const ApiSwaggerResponse = <T extends Type<any>>(
   model: T,
   type: 'object' | 'array',
 ) => {
