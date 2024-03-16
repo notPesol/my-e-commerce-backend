@@ -16,11 +16,13 @@ export abstract class BaseAssociationRepository extends BaseRepoSitory {
   protected setupIncludeOptions() {}
 
   // Implement on clild class
-  protected getIncludeOption(key: string): Includeable | Includeable[] | any {}
+  protected getIncludeOption(key: any): Includeable | Includeable[] | any {}
 
   onApplicationBootstrap() {
     this.init();
     this.setupAssociation();
     this.setupIncludeOptions();
   }
+
+  protected abstract setModel(key: any)
 }

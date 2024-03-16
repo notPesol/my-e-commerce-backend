@@ -4,14 +4,17 @@ import { ResponseDTO } from '../dto/response.dto';
 
 export const ApiSwaggerResponse = <T extends Type<any>>(
   model: T,
-  type: 'object' | 'array',
+  type: 'object' | 'array' | 'boolean' | 'number',
 ) => {
-  const data =
-    type === 'array'
-      ? {
-          items: { $ref: getSchemaPath(model) },
-        }
-      : { $ref: getSchemaPath(model) };
+  let data: any = { $ref: getSchemaPath(model) };
+
+  if (type === 'array') {
+    data = { items: { $ref: getSchemaPath(model) } };
+  } else if (type === 'boolean') {
+    data = { type: 'boolean' };
+  } else if (type === 'number') {
+    data = { type: 'number' };
+  }
 
   return applyDecorators(
     ApiExtraModels(ResponseDTO, model),

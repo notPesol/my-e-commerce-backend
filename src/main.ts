@@ -9,6 +9,7 @@ async function bootstrap() {
     .setTitle('My E-Commerce service')
     .setDescription('My E-Commerce easy API')
     .setVersion('1.0')
+    .addBearerAuth()
     .addTag('E-Commerce')
     .build();
 

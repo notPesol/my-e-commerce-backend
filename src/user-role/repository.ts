@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
+import { Status } from 'src/common/enum';
 import { BaseRepoSitory } from 'src/common/repository/base.repositoty';
 import { SequelizeService } from 'src/common/sequelize/service';
 import { RoleRepository } from 'src/role/repository';
@@ -40,16 +41,20 @@ export class UserRoleRepository extends BaseRepoSitory {
             key: 'id',
           },
         },
+        status: {
+          type: DataTypes.ENUM(...Object.values(Status)),
+          defaultValue: Status.Active,
+        },
         createdAt: {
           type: DataTypes.DATE,
-          defaultValue: () => new Date(),
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
         updatedAt: {
           type: DataTypes.DATE,
-          defaultValue: () => new Date(),
+          allowNull: true,
         },
       },
-      { tableName: 'user_role' },
+      { tableName: 'user_roles' },
     );
   }
 }

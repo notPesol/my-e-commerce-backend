@@ -1,23 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { BaseAssociationRepository } from 'src/common/repository/base-association.repository';
-import { PostRepository } from 'src/post/repository';
 import { RoleRepository } from 'src/role/repository';
 import { UserRoleRepository } from 'src/user-role/repository';
 import { UserRepository } from 'src/user/repository';
 
 export enum includeKey {
-  userRole = 'user-role',
-  userPost = 'user-post',
-  userRolePost = 'user-role-post',
+  userRoles = 'user-roles',
+  roleUsers = 'role-users',
 }
 
 @Injectable()
-export class UserAssociationRepository extends BaseAssociationRepository {
+export class UserRoleAssociationRepository extends BaseAssociationRepository {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly userRoleRepository: UserRoleRepository,
     private readonly roleRepository: RoleRepository,
-    private readonly postRepository: PostRepository,
   ) {
     super();
   }
@@ -30,7 +27,6 @@ export class UserAssociationRepository extends BaseAssociationRepository {
     const UserModel = this.userRepository.getModel();
     const UserRoleModel = this.userRoleRepository.getModel();
     const RoleModel = this.roleRepository.getModel();
-    const PostModel = this.postRepository.getModel();
 
     UserModel.belongsToMany(RoleModel, {
       through: UserRoleModel,
@@ -38,32 +34,34 @@ export class UserAssociationRepository extends BaseAssociationRepository {
       otherKey: 'roleId',
     });
 
-    UserModel.hasMany(PostModel, {
-      foreignKey: 'userId',
+    RoleModel.belongsToMany(UserModel, {
+      through: UserRoleModel,
+      foreignKey: 'roleId',
+      otherKey: 'userId',
     });
   }
 
   protected setupIncludeOptions(): void {
-    this.includeOptions.set(includeKey.userRole, {
+    this.includeOptions.set(includeKey.userRoles, {
       model: this.roleRepository.getModel(),
     });
-
-    this.includeOptions.set(includeKey.userPost, {
-      model: this.postRepository.getModel(),
+    this.includeOptions.set(includeKey.roleUsers, {
+      model: this.userRepository.getModel(),
     });
-
-    this.includeOptions.set(includeKey.userRolePost, [
-      {
-        model: this.roleRepository.getModel(),
-      },
-      {
-        model: this.postRepository.getModel(),
-      },
-    ]);
   }
 
-  getIncludeOption(key: string) {
+  getIncludeOption(key: includeKey) {
+    this.setModel(key);
+
     return this.includeOptions.get(key);
+  }
+
+  protected setModel(key: includeKey): void {
+    if (key === includeKey.userRoles) {
+      this.model = this.userRepository.getModel();
+    } else if (key === includeKey.roleUsers) {
+      this.model = this.roleRepository.getModel();
+    }
   }
 
   // util method
@@ -77,9 +75,5 @@ export class UserAssociationRepository extends BaseAssociationRepository {
 
   getRoleRepository() {
     return this.roleRepository;
-  }
-
-  getPostRepository() {
-    this.postRepository;
   }
 }
