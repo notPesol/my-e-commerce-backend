@@ -15,21 +15,22 @@ import { RoleDTO } from './dto/dto';
 import { BaseController } from 'src/common/controller/base.controller';
 import { Role } from 'src/common/enum';
 import { Roles } from 'src/common/decorator/roles';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiSwaggerResponse } from 'src/common/decorator/api-response';
 import { ResponseDTO } from 'src/common/dto/response.dto';
 import { UserDTO } from 'src/user/dto/dto';
 import { UserSearchDTO } from 'src/user/dto/search.dto';
 import { Public } from 'src/common/decorator/public';
 
-@Public()
 @ApiTags('Roles')
+@ApiBearerAuth()
 @Controller('/role')
 export class RoleController extends BaseController<RoleDTO> {
   constructor(private readonly roleService: RoleService) {
     super(roleService);
   }
 
+  @Public()
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiSwaggerResponse(RoleDTO, 'array')
   @Get()
@@ -38,8 +39,9 @@ export class RoleController extends BaseController<RoleDTO> {
     return result;
   }
 
+  @Public()
   @UsePipes(new ValidationPipe({ transform: true }))
-  @ApiSwaggerResponse(UserDTO, 'object')
+  @ApiSwaggerResponse(RoleDTO, 'object')
   @Get('/:id')
   async findByPk(@Param('id') id: number) {
     return super.findByPk(id);
@@ -49,7 +51,7 @@ export class RoleController extends BaseController<RoleDTO> {
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiSwaggerResponse(RoleDTO, 'object')
   @Post()
-  async create(@Body() body: UserDTO): Promise<ResponseDTO<RoleDTO>> {
+  async create(@Body() body: RoleDTO): Promise<ResponseDTO<RoleDTO>> {
     return await super.create(body);
   }
 

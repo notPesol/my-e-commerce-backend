@@ -18,10 +18,11 @@ import { Roles } from 'src/common/decorator/roles';
 import { Role } from 'src/common/enum';
 import { BaseController } from 'src/common/controller/base.controller';
 import { ApiSwaggerResponse } from 'src/common/decorator/api-response';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Roles(Role.Admin)
 @ApiTags('Users')
+@ApiBearerAuth()
 @Controller('/user')
 export class UserController extends BaseController<UserDTO> {
   constructor(private readonly userService: UserService) {
