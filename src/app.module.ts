@@ -13,6 +13,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { BrandModule } from './brand/module';
 import { CategoryModule } from './category/module';
+import { ProductModule } from './product/module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CategoryModule } from './category/module';
     AuthModule,
     BrandModule,
     CategoryModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [
