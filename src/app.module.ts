@@ -15,6 +15,7 @@ import { BrandModule } from './brand/module';
 import { CategoryModule } from './category/module';
 import { ProductModule } from './product/module';
 import { ProductAssociationModule } from './product-association/module';
+import { WishlistAssociationModule } from './wishlist-association/module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ProductAssociationModule } from './product-association/module';
     CategoryModule,
     ProductModule,
     ProductAssociationModule,
+    WishlistAssociationModule,
   ],
   controllers: [],
   providers: [
