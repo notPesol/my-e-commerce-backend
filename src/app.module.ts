@@ -12,6 +12,7 @@ import { HttpExceptionFilter } from './common/exception-filter/http-exception.fi
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { BrandModule } from './brand/module';
+import { CategoryModule } from './category/module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { BrandModule } from './brand/module';
     UserRoleAssociationModule,
     AuthModule,
     BrandModule,
+    CategoryModule,
   ],
   controllers: [],
   providers: [
