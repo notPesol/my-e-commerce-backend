@@ -18,8 +18,8 @@ import { Roles } from 'src/common/decorator/roles';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiSwaggerResponse } from 'src/common/decorator/api-response';
 import { ResponseDTO } from 'src/common/dto/response.dto';
-import { UserSearchDTO } from 'src/user/dto/search.dto';
 import { Public } from 'src/common/decorator/public';
+import { BrandSearchDTO } from './dto/search.dto';
 
 @ApiTags('Brands')
 @ApiBearerAuth()
@@ -33,7 +33,7 @@ export class BrandController extends BaseController<BrandDTO> {
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiSwaggerResponse(BrandDTO, 'array')
   @Get()
-  async findAll(@Query() searchDTO: UserSearchDTO) {
+  async findAll(@Query() searchDTO: BrandSearchDTO) {
     const result = await this.service.findAll(searchDTO);
     return result;
   }

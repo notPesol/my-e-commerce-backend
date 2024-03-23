@@ -20,6 +20,7 @@ import { ApiSwaggerResponse } from 'src/common/decorator/api-response';
 import { ResponseDTO } from 'src/common/dto/response.dto';
 import { UserSearchDTO } from 'src/user/dto/search.dto';
 import { Public } from 'src/common/decorator/public';
+import { CategorySearchDTO } from './dto/search.dto';
 
 @ApiTags('Categories')
 @ApiBearerAuth()
@@ -33,7 +34,7 @@ export class CategoryController extends BaseController<CategoryDTO> {
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiSwaggerResponse(CategoryDTO, 'array')
   @Get()
-  async findAll(@Query() searchDTO: UserSearchDTO) {
+  async findAll(@Query() searchDTO: CategorySearchDTO) {
     const result = await this.service.findAll(searchDTO);
     return result;
   }

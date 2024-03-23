@@ -14,6 +14,7 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { BrandModule } from './brand/module';
 import { CategoryModule } from './category/module';
 import { ProductModule } from './product/module';
+import { ProductAssociationModule } from './product-association/module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ProductModule } from './product/module';
     BrandModule,
     CategoryModule,
     ProductModule,
+    ProductAssociationModule,
   ],
   controllers: [],
   providers: [
