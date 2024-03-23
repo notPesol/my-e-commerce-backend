@@ -5,14 +5,14 @@ import { BaseRepoSitory } from 'src/common/repository/base.repositoty';
 import { SequelizeService } from 'src/common/sequelize/service';
 
 @Injectable()
-export class RoleRepository extends BaseRepoSitory {
+export class BrandRepository extends BaseRepoSitory {
   constructor(private readonly databaseService: SequelizeService) {
     super();
   }
 
   protected init(): void {
     this.model = this.databaseService.defineModel(
-      'role',
+      'brand',
       {
         id: {
           type: DataTypes.INTEGER,
@@ -20,8 +20,12 @@ export class RoleRepository extends BaseRepoSitory {
           autoIncrement: true,
         },
         name: {
-          type: DataTypes.STRING(30),
-          allowNull: false,
+          type: DataTypes.STRING(40),
+          allowNull: false
+        },
+        description: {
+          type: DataTypes.TEXT,
+          allowNull: true
         },
         status: {
           type: DataTypes.ENUM(...Object.values(Status)),
@@ -36,7 +40,7 @@ export class RoleRepository extends BaseRepoSitory {
           allowNull: true
         },
       },
-      { tableName: 'roles' },
+      { tableName: 'brands' },
     );
   }
 }

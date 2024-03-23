@@ -1,19 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
 import { BaseDTO } from 'src/common/dto/base.dto';
 import { Status } from 'src/common/enum';
 
-export class UserDTO extends BaseDTO {
+export class CategoryDTO extends BaseDTO {
   @ApiProperty({
     required: false,
   })
   id: number;
 
   @ApiProperty()
-  username: string;
+  name: string;
 
-  @ApiProperty()
-  password: string;
+  @ApiProperty({
+    required: false,
+  })
+  description: string;
 
   @ApiProperty({
     enum: Status,

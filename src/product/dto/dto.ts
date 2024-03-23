@@ -1,19 +1,35 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsOptional } from 'class-validator';
 import { BaseDTO } from 'src/common/dto/base.dto';
 import { Status } from 'src/common/enum';
 
-export class UserDTO extends BaseDTO {
+export class ProductDTO extends BaseDTO {
   @ApiProperty({
     required: false,
   })
   id: number;
 
   @ApiProperty()
-  username: string;
+  brandId: number;
 
   @ApiProperty()
-  password: string;
+  categoryId: number;
+
+  @ApiProperty()
+  code: string;
+
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  description: string;
+
+  @ApiProperty()
+  price: number;
+
+  @ApiProperty()
+  stock: number;
 
   @ApiProperty({
     enum: Status,

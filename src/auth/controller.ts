@@ -1,30 +1,40 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AuthService } from './service';
 import { ResponseDTO } from 'src/common/dto/response.dto';
-import { LoginDTO } from './dto/login.dto';
 import { Public } from 'src/common/decorator/public';
+import { ApiTags } from '@nestjs/swagger';
+import { RegisterDTO, LoginDTO, AuthResponseDTO } from './dto/dto';
+import { ApiSwaggerResponse } from 'src/common/decorator/api-response';
 
+@Public()
+@ApiTags('Authentication')
 @Controller('/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Public()
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiSwaggerResponse(AuthResponseDTO, 'object')
   @Post('/register')
-  register(@Body(new ValidationPipe()) body: LoginDTO) {
-    return this.authService.register(body).then((result) => {
-      const responseDTO = new ResponseDTO();
-      responseDTO.data = result;
-      return responseDTO;
-    });
+  async register(@Body() body: RegisterDTO) {
+    const result = await this.authService.register(body);
+    const responseDTO = new ResponseDTO<AuthResponseDTO>();
+    responseDTO.data = result;
+    return responseDTO;
   }
 
-  @Public()
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @ApiSwaggerResponse(AuthResponseDTO, 'object')
   @Post('/login')
-  login(@Body(new ValidationPipe()) body: LoginDTO) {
-    return this.authService.login(body).then((result) => {
-      const responseDTO = new ResponseDTO();
-      responseDTO.data = result;
-      return responseDTO;
-    });
+  async login(@Body() body: LoginDTO) {
+    const result = await this.authService.login(body);
+    const responseDTO = new ResponseDTO<AuthResponseDTO>();
+    responseDTO.data = result;
+    return responseDTO;
   }
 }

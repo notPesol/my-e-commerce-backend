@@ -1,5 +1,5 @@
 import { SearchDTO } from "src/common/dto/search.dto";
 
-export class PostSearchDTO extends SearchDTO {
+export class WishlistSearchDTO extends SearchDTO {
   
 }

@@ -1,24 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { PostRepository } from './repository';
-import { PostDTO } from './dto/dto';
-import { PostSearchDTO } from './dto/search.dto';
+import { BrandRepository } from './repository';
+import { BrandDTO } from './dto/dto';
+import { BrandSearchDTO } from './dto/search.dto';
 import { Op } from 'sequelize';
-import { CreatePostDTO } from './dto/create-post.dto';
 import { BaseService } from 'src/common/service/base.service';
 import { ResponseDTO } from 'src/common/dto/response.dto';
 
 @Injectable()
-export class PostService extends BaseService<PostDTO> {
-  constructor(private readonly postRepository: PostRepository) {
-    super(postRepository);
+export class BrandService extends BaseService<BrandDTO> {
+  constructor(private readonly brandRepository: BrandRepository) {
+    super(brandRepository);
   }
 
-  async findAll(searchDTO: PostSearchDTO): Promise<ResponseDTO<PostDTO[]>> {
+  async findAll(searchDTO: BrandSearchDTO): Promise<ResponseDTO<BrandDTO[]>> {
     const where = {};
     const options = {};
 
     if (searchDTO.query) {
-      where['title'] = {
+      where['name'] = {
         [Op.iLike]: `%${searchDTO.query}%`,
       };
     }
@@ -27,7 +26,7 @@ export class PostService extends BaseService<PostDTO> {
       options['offset'] = (searchDTO.page - 1) * searchDTO.limit;
     }
 
-    const responseDTO = new ResponseDTO<PostDTO[]>();
+    const responseDTO = new ResponseDTO<BrandDTO[]>();
 
     const findOptions = {
       where,
@@ -44,13 +43,5 @@ export class PostService extends BaseService<PostDTO> {
     }
 
     return responseDTO;
-  }
-
-  async createNew(dto: CreatePostDTO, req: any) {
-    const model = await this.postRepository.create({
-      ...dto,
-      userId: req?.user?.id,
-    });
-    return new PostDTO(model);
   }
 }

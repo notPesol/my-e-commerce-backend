@@ -10,38 +10,38 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { RoleService } from './service';
-import { RoleDTO } from './dto/dto';
+import { ProductService } from './service';
+import { ProductDTO } from './dto/dto';
 import { BaseController } from 'src/common/controller/base.controller';
 import { Role } from 'src/common/enum';
 import { Roles } from 'src/common/decorator/roles';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiSwaggerResponse } from 'src/common/decorator/api-response';
 import { ResponseDTO } from 'src/common/dto/response.dto';
-import { UserDTO } from 'src/user/dto/dto';
 import { UserSearchDTO } from 'src/user/dto/search.dto';
 import { Public } from 'src/common/decorator/public';
+import { ProductSearchDTO } from './dto/search.dto';
 
-@ApiTags('Roles')
+@ApiTags('Products')
 @ApiBearerAuth()
-@Controller('/role')
-export class RoleController extends BaseController<RoleDTO> {
-  constructor(private readonly roleService: RoleService) {
-    super(roleService);
+@Controller('/product')
+export class ProductController extends BaseController<ProductDTO> {
+  constructor(private readonly productService: ProductService) {
+    super(productService);
   }
 
   @Public()
   @UsePipes(new ValidationPipe({ transform: true }))
-  @ApiSwaggerResponse(RoleDTO, 'array')
+  @ApiSwaggerResponse(ProductDTO, 'array')
   @Get()
-  async findAll(@Query() searchDTO: UserSearchDTO) {
+  async findAll(@Query() searchDTO: ProductSearchDTO) {
     const result = await this.service.findAll(searchDTO);
     return result;
   }
 
   @Public()
   @UsePipes(new ValidationPipe({ transform: true }))
-  @ApiSwaggerResponse(RoleDTO, 'object')
+  @ApiSwaggerResponse(ProductDTO, 'object')
   @Get('/:id')
   async findByPk(@Param('id') id: number) {
     return super.findByPk(id);
@@ -49,23 +49,23 @@ export class RoleController extends BaseController<RoleDTO> {
 
   @Roles(Role.Admin)
   @UsePipes(new ValidationPipe({ transform: true }))
-  @ApiSwaggerResponse(RoleDTO, 'object')
+  @ApiSwaggerResponse(ProductDTO, 'object')
   @Post()
-  async create(@Body() body: RoleDTO): Promise<ResponseDTO<RoleDTO>> {
+  async create(@Body() body: ProductDTO): Promise<ResponseDTO<ProductDTO>> {
     return await super.create(body);
   }
 
   @Roles(Role.Admin)
   @UsePipes(new ValidationPipe({ transform: true }))
-  @ApiSwaggerResponse(RoleDTO, 'object')
+  @ApiSwaggerResponse(ProductDTO, 'object')
   @Put()
-  async update(@Body() body: RoleDTO): Promise<ResponseDTO<RoleDTO>> {
+  async update(@Body() body: ProductDTO): Promise<ResponseDTO<ProductDTO>> {
     return await super.update(body);
   }
 
   @Roles(Role.Admin)
   @UsePipes(new ValidationPipe({ transform: true }))
-  @ApiSwaggerResponse(RoleDTO, 'boolean')
+  @ApiSwaggerResponse(ProductDTO, 'boolean')
   @Delete('/:id')
   async delete(@Param('id') id: number): Promise<ResponseDTO<boolean>> {
     return await super.delete(id);

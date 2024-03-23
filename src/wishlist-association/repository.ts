@@ -1,16 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { DataTypes, Sequelize } from 'sequelize';
 import { Status } from 'src/common/enum';
-import { BaseRepoSitory } from 'src/common/repository/base.repositoty';
+import { BaseAssociationRepository } from 'src/common/repository/base-association.repository';
 import { SequelizeService } from 'src/common/sequelize/service';
-import { RoleRepository } from 'src/role/repository';
+import { ProductRepository } from 'src/product/repository';
 import { UserRepository } from 'src/user/repository';
 
+export enum includeKey {
+  all = 'all',
+}
+
 @Injectable()
-export class UserRoleRepository extends BaseRepoSitory {
+export class WishlistAssociationRepository extends BaseAssociationRepository {
   constructor(
     private readonly databaseService: SequelizeService,
-    private readonly roleRepository: RoleRepository,
+    private readonly productRepository: ProductRepository,
     private readonly userRepository: UserRepository,
   ) {
     super();
@@ -18,26 +22,26 @@ export class UserRoleRepository extends BaseRepoSitory {
 
   protected init(): void {
     this.model = this.databaseService.defineModel(
-      'userRole',
+      'wishlist',
       {
         id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
         },
+        productId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: this.productRepository.getModel(),
+            key: 'id',
+          },
+        },
         userId: {
           type: DataTypes.INTEGER,
           allowNull: false,
           references: {
             model: this.userRepository.getModel(),
-            key: 'id',
-          },
-        },
-        roleId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          references: {
-            model: this.roleRepository.getModel(),
             key: 'id',
           },
         },
@@ -54,7 +58,27 @@ export class UserRoleRepository extends BaseRepoSitory {
           allowNull: true,
         },
       },
-      { tableName: 'user_roles' },
+      { tableName: 'wishlists' },
     );
   }
+
+  protected setupAssociation(): void {
+    this.model.belongsTo(this.productRepository.getModel(), {
+      foreignKey: 'productId',
+    });
+  }
+
+  protected setupIncludeOptions(): void {
+    this.includeOptions.set(includeKey.all, [
+      {
+        model: this.productRepository.getModel(),
+      },
+    ]);
+  }
+
+  getIncludeOption(key: includeKey) {
+    return this.includeOptions.get(key);
+  }
+
+  protected setModel(key: includeKey) {}
 }

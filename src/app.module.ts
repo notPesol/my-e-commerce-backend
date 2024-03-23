@@ -6,12 +6,16 @@ import { SequelizeModule } from './common/sequelize/module';
 import { AuthGuard } from './common/guard/auth.guard';
 import { RoleModule } from './role/module';
 import { RolesGuard } from './common/guard/roles.guard';
-import { PostModule } from './post/module';
-import { UserAssociationModule } from './user-association/module';
+import { UserRoleAssociationModule } from './user-role-association/module';
 import { AuthModule } from './auth/module';
 import { HttpExceptionFilter } from './common/exception-filter/http-exception.filter';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { BrandModule } from './brand/module';
+import { CategoryModule } from './category/module';
+import { ProductModule } from './product/module';
+import { ProductAssociationModule } from './product-association/module';
+import { WishlistAssociationModule } from './wishlist-association/module';
 
 @Module({
   imports: [
@@ -22,9 +26,13 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
     SequelizeModule,
     UserModule,
     RoleModule,
-    PostModule,
-    UserAssociationModule,
+    UserRoleAssociationModule,
     AuthModule,
+    BrandModule,
+    CategoryModule,
+    ProductModule,
+    ProductAssociationModule,
+    WishlistAssociationModule,
   ],
   controllers: [],
   providers: [

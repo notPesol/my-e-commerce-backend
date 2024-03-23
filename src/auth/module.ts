@@ -3,7 +3,7 @@ import { AuthService } from './service';
 import { AuthController } from './controller';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { UserAssociationModule } from 'src/user-association/module';
+import { UserRoleAssociationModule } from 'src/user-role-association/module';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { UserAssociationModule } from 'src/user-association/module';
         };
       },
     }),
-    UserAssociationModule,
+    UserRoleAssociationModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
