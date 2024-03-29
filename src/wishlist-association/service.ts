@@ -37,7 +37,14 @@ export class WishlistAssociationService {
       throw new BadRequestException();
     }
 
-    const model = await this.wishlistRepository.create(body);
+    const [model, isCreated] = await this.wishlistRepository.findOrCreate(
+      { productId: body.productId, userId: body.userId },
+      body,
+    );
+
+    if (!isCreated) {
+      throw new BadRequestException('Product is already exists in wishlist.');
+    }
 
     return new WishlistDTO(model);
   }

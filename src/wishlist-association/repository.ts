@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataTypes, Sequelize } from 'sequelize';
+import { DataTypes, Sequelize, WhereOptions } from 'sequelize';
 import { Status } from 'src/common/enum';
 import { BaseAssociationRepository } from 'src/common/repository/base-association.repository';
 import { SequelizeService } from 'src/common/sequelize/service';
@@ -81,4 +81,11 @@ export class WishlistAssociationRepository extends BaseAssociationRepository {
   }
 
   protected setModel(key: includeKey) {}
+
+  async findOrCreate(where: WhereOptions, data: any): Promise<[any, boolean]> {
+    return this.model.findOrCreate({
+      where,
+      defaults: data,
+    });
+  }
 }
