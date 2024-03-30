@@ -5,6 +5,8 @@ import {
   Model,
   ModelCtor,
   NonNullFindOptions,
+  UpdateOptions,
+  WhereOptions,
 } from 'sequelize';
 
 export abstract class BaseRepoSitory implements OnApplicationBootstrap {
@@ -44,9 +46,27 @@ export abstract class BaseRepoSitory implements OnApplicationBootstrap {
     return this.model.create(data, { ...options, returning: true });
   }
 
-  async update(id: number, data: any): Promise<Model | null> {
-    await this.model.update(data, { where: { id } });
-    return this.findByPk(id);
+  async findOrCreate(where: WhereOptions, data: any): Promise<[any, boolean]> {
+    return this.model.findOrCreate({
+      where,
+      defaults: data,
+    });
+  }
+
+  async updateById(id: number, data: any): Promise<Model | null> {
+    const [, models] = await this.model.update(data, {
+      where: { id },
+      returning: true,
+    });
+    return models.length > 0 ? models[0] : null;
+  }
+
+  async update(options: UpdateOptions, data: any): Promise<Model[]> {
+    const [, models] = await this.model.update(data, {
+      ...options,
+      returning: true,
+    });
+    return models;
   }
 
   async delete(id: number): Promise<boolean> {

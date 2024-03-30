@@ -18,7 +18,6 @@ import { Roles } from 'src/common/decorator/roles';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiSwaggerResponse } from 'src/common/decorator/api-response';
 import { ResponseDTO } from 'src/common/dto/response.dto';
-import { UserDTO } from 'src/user/dto/dto';
 import { UserSearchDTO } from 'src/user/dto/search.dto';
 import { Public } from 'src/common/decorator/public';
 

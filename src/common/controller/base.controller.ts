@@ -6,6 +6,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseFilters,
   UsePipes,
   ValidationPipe,
@@ -14,6 +15,7 @@ import { BaseService } from '../service/base.service';
 import { ResponseDTO } from '../dto/response.dto';
 import { SearchDTO } from '../dto/search.dto';
 import { HttpExceptionFilter } from '../exception-filter/http-exception.filter';
+import { Request } from 'express';
 
 @UseFilters(HttpExceptionFilter)
 export class BaseController<T> {
@@ -24,7 +26,10 @@ export class BaseController<T> {
   }
 
   @Get('/:id')
-  async findByPk(@Param('id') id: number): Promise<ResponseDTO<T>> {
+  async findByPk(
+    @Param('id') id: number,
+    @Req() req?: Request,
+  ): Promise<ResponseDTO<T>> {
     const result = await this.service.findByPk(id);
     const responseDTO = new ResponseDTO<T>();
     responseDTO.data = result;
@@ -33,14 +38,20 @@ export class BaseController<T> {
 
   @UsePipes(new ValidationPipe({ transform: true }))
   @Get()
-  async findAll(@Query() searchDTO: SearchDTO): Promise<ResponseDTO<T[]>> {
+  async findAll(
+    @Query() searchDTO: SearchDTO,
+    @Req() req?: Request,
+  ): Promise<ResponseDTO<T[]>> {
     const result = await this.service.findAll(searchDTO);
     return result;
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
   @Post()
-  async create(@Body() body: any): Promise<ResponseDTO<T>> {
+  async create(
+    @Body() body: any,
+    @Req() req?: Request,
+  ): Promise<ResponseDTO<T>> {
     const result = await this.service.create(body);
     const responseDTO = new ResponseDTO<T>();
     responseDTO.data = result;
@@ -49,15 +60,21 @@ export class BaseController<T> {
 
   @UsePipes(new ValidationPipe({ transform: true }))
   @Put()
-  async update(@Body() body: any): Promise<ResponseDTO<T>> {
+  async update(
+    @Body() body: any,
+    @Req() req?: Request,
+  ): Promise<ResponseDTO<T>> {
     const result = await this.service.update(body.id, body);
     const responseDTO = new ResponseDTO<T>();
     responseDTO.data = result;
     return responseDTO;
   }
-  
+
   @Delete('/:id')
-  async delete(@Param('id') id: number): Promise<ResponseDTO<boolean>> {
+  async delete(
+    @Param('id') id: number,
+    @Req() req?: Request,
+  ): Promise<ResponseDTO<boolean>> {
     const result = await this.service.delete(id);
     const responseDTO = new ResponseDTO<boolean>();
     responseDTO.data = result;

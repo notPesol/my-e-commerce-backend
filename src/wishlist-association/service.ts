@@ -5,8 +5,8 @@ import { WishlistSearchDTO } from './dto/search.dto';
 import { ResponseDTO } from 'src/common/dto/response.dto';
 import { Request } from 'express';
 import { UserRolesDTO } from 'src/auth/dto/dto';
-import { Role } from 'src/common/enum';
 import { FindOptions } from 'sequelize';
+import { isAdmin } from 'src/common/utils/validation';
 
 @Injectable()
 export class WishlistAssociationService {
@@ -21,7 +21,7 @@ export class WishlistAssociationService {
 
     const user: UserRolesDTO = req['user'];
 
-    if (!user.roles.some((role) => role.name === Role.Admin)) {
+    if (!isAdmin(user.roles)) {
       where['userId'] = user.id;
     }
 
@@ -56,7 +56,7 @@ export class WishlistAssociationService {
 
     const user: UserRolesDTO = req['user'];
 
-    if (!user.roles.some((role) => role.name === Role.Admin)) {
+    if (!isAdmin(user.roles)) {
       where['userId'] = user.id;
     }
 
@@ -77,7 +77,7 @@ export class WishlistAssociationService {
 
     const user: UserRolesDTO = req['user'];
 
-    if (!user.roles.some((role) => role.name === Role.Admin)) {
+    if (!isAdmin(user.roles)) {
       where['userId'] = user.id;
     }
 
