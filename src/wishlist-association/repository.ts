@@ -81,11 +81,4 @@ export class WishlistAssociationRepository extends BaseAssociationRepository {
   }
 
   protected setModel(key: includeKey) {}
-
-  async findOrCreate(where: WhereOptions, data: any): Promise<[any, boolean]> {
-    return this.model.findOrCreate({
-      where,
-      defaults: data,
-    });
-  }
 }
