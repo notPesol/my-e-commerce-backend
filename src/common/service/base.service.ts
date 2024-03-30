@@ -19,7 +19,7 @@ export class BaseService<T> {
 
   async findByPk(id: number): Promise<T> {
     const model = await this.repository.findByPk(id);
-    return await this.toJson(model);
+    return this.toJson(model);
   }
 
   async findOne(options: NonNullFindOptions | FindOptions): Promise<T> {
@@ -67,7 +67,7 @@ export class BaseService<T> {
   }
 
   async update(id: number, data: any): Promise<T> {
-    const model = await this.repository.update(id, data);
+    const model = await this.repository.updateById(id, data);
     return this.toJson(model);
   }
 
